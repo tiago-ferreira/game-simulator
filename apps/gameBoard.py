@@ -17,3 +17,4 @@ class GameBoard():
     def positions(self):
         for pos in self.__positions:
             print("In position "+str(pos.position)+", has any house to buy by "+ str(pos.house.valueToBuy)+", and loan by "+ str(pos.house.valueToLoan)+", this house have a owner: "+str(pos.owner != None))
+        print()
