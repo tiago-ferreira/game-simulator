@@ -6,6 +6,7 @@ class Player:
         self.__money = 300
         self.__type = type
         self.__code = code
+        self.__actualPosition = 0
 
     @property
     def name(self):
@@ -17,7 +18,7 @@ class Player:
 
     @property
     def money(self):
-        return self.__name
+        return self.__money
 
     @money.setter
     def money(self, money):
@@ -39,11 +40,22 @@ class Player:
     def code(self, code):
         self.__code = code
 
+    @property
+    def actualPosition(self):
+        return self.__actualPosition
+
+    @actualPosition.setter
+    def actualPosition(self, actualPosition):
+        self.__actualPosition = actualPosition
+
     def addMoney(self, value):
         self.__money = self.__money + value
 
     def subtractMoney(self, value):
         self.__money = self.__money - value
+
+
+
 
     def __str__(self) -> str:
         return "Name="+self.__name+"; type="+str(self.__type)+"; money="+str(self.__money)+"; code="+str(self.__code)
