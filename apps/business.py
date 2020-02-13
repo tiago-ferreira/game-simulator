@@ -13,13 +13,14 @@ class Business:
     def __init__(self):
         self.__players = self.initPlayers()
         self.__gameBoard = GameBoard(20)
+        self.__qtdSimulate = 300
 
 
     def execute(self):
 
         results = []
 
-        for simulation in range(0,3):
+        for simulation in range(0,self.__qtdSimulate):
             self.__players = self.initPlayers()
             self.__gameBoard = GameBoard(20)
             count = 0
@@ -124,11 +125,23 @@ class Business:
         df = pd.DataFrame(results)
         meanTurns = df['shiftNumber'].mean()
         gamesThatEndWithTimeout = self.countGamesThatEndWithTimeout(results)
-        print("Mean="+str(meanTurns))
-        print("Timeout="+str(gamesThatEndWithTimeout))
-        reports = {}
 
-        return results
+        percentImpulsivo = self.percent(self.countPlayerTypeByType(results, PlayerType.IMPULSIVO))
+        percentCauteloso = self.percent(self.countPlayerTypeByType(results, PlayerType.CAUTELOSO))
+        percentExigente = self.percent(self.countPlayerTypeByType(results, PlayerType.EXIGENTE))
+        percentAleatorio = self.percent(self.countPlayerTypeByType(results, PlayerType.ALEATORIO))
+        percentWinners = [percentImpulsivo, percentCauteloso, percentExigente, percentAleatorio]
+        mostWinnerTypeOfPlayer = self.playerTypeMostWinner(results)
+        reports = {
+            "Turnos em media demora uma partida":meanTurns,
+            "Games que terminaram com timeout": gamesThatEndWithTimeout,
+            "Porcentagem de jogadores Impulsivos":percentImpulsivo,
+            "Porcentagem de jogadores Exigentes":percentExigente,
+            "Porcentagem de jogadores Cautelosos":percentCauteloso,
+            "Porcentagem de jogadores Aleatorios":percentAleatorio,
+            "Comportamento de Jogador que mais vence": str(mostWinnerTypeOfPlayer)
+        }
+        return reports
 
     def countGamesThatEndWithTimeout(self, results):
         count = 0
@@ -136,3 +149,20 @@ class Business:
             if i['endGameType'] == 'timeout':
                 count += 1
         return count
+
+    def countPlayerTypeByType(self, results, type):
+        count = 0
+        for i in results:
+            if i['playerType'] == str(type):
+                count += 1
+        return count
+
+    def percent(self, value):
+        return (value * 100) / self.__qtdSimulate
+
+    def playerTypeMostWinner(self, results):
+        max = PlayerType.IMPULSIVO
+        for type in PlayerType:
+            if(self.countPlayerTypeByType(results, type) > self.countPlayerTypeByType(results, max) ):
+                max = type
+        return max
