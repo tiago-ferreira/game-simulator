@@ -27,11 +27,12 @@ $ tree .
 Antes de rodar o projeto precisamos verificar a versão do python e importar as seguintes libs
 
 - python-version = python 3,8
-- pip3,8 install pandas
-- pip3,8 install flask
-- pip3,8 install flask-restful
-- pip3.8 install python-dotenv
-
+```
+pip3.8 install pandas
+pip3.8 install flask
+pip3.8 install flask-restful
+pip3.8 install python-dotenv
+```
 
 ### RUN
 
