@@ -19,40 +19,40 @@ class Business:
 
         results = []
 
-        count = 0
-        result = {}
-        while count <= 1000:
-            for player in self.__players:
-                if self.hasMoney(player):
-                    position = self.playerRun()
-                    self.changePosition(player, position)
-                    index = player.actualPosition -1;
-                    if self.hasOwner(index):
-                        self.payForLoan(player, index)
-                    else:
-                        if self.hasMoneyToPayHouse(player, self.__gameBoard.positions[index].house.valueToBuy) and self.analysePlayerTypeToBuy(player, self.__gameBoard.positions[index].house):
-                            self.__gameBoard.positions[index].owner = player
-                            pos = self.__gameBoard.positions[index]
-                            print(pos.owner)
-                            print(pos.position)
-                            print(pos.house)
-                            player.subtractMoney(self.__gameBoard.positions[index].house.valueToBuy)
+        for simulation in range(0,3):
+            self.__players = self.initPlayers()
+            self.__gameBoard = GameBoard(20)
+            count = 0
+            result = {}
+            while count <= 1000:
+                for player in self.__players:
+                    if self.hasMoney(player):
+                        position = self.playerRun()
+                        self.changePosition(player, position)
+                        index = player.actualPosition -1;
+                        if self.hasOwner(index):
+                            self.payForLoan(player, index)
+                        else:
+                            if self.hasMoneyToPayHouse(player, self.__gameBoard.positions[index].house.valueToBuy) and self.analysePlayerTypeToBuy(player, self.__gameBoard.positions[index].house):
+                                self.__gameBoard.positions[index].owner = player
+                                pos = self.__gameBoard.positions[index]
+                                player.subtractMoney(self.__gameBoard.positions[index].house.valueToBuy)
+                    if self.verifyIfHasOnlyAPlayerWithMoney():
+                        break
+                if count == 1000:
+                    result['endGameType'] = "timeout"
+                else:
+                    result['endGameType'] = "normalVictory"
+                result['shiftNumber'] = count
+
                 if self.verifyIfHasOnlyAPlayerWithMoney():
                     break
-            print(count)
-            if count == 1000:
-                result['endGameType'] = "timeout"
-            else:
-                result['endGameType'] = "normalVictory"
-            result['shiftNumber'] = count
-            if self.verifyIfHasOnlyAPlayerWithMoney():
-                break
-            count += 1
-        winner = self.verifyPlayerWithMoreMoney()
-        result['playerName'] = winner.name
-        result['playerType'] = str(winner.type)
-        print("Winner is "+winner.name+", he has "+str(player.money))
-        results.append(result)
+                count += 1
+            winner = self.verifyPlayerWithMoreMoney()
+            result['playerName'] = winner.name
+            result['playerType'] = str(winner.type)
+            print("Winner is "+winner.name+", he has "+str(winner.money))
+            results.append(result)
 
         return results
 
