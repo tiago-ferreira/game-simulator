@@ -4,7 +4,7 @@ from .house import House
 from .player import Player
 from .gameBoard import GameBoard
 from .playerType import PlayerType
-import json
+import pandas as pd
 
 from random import randint
 
@@ -51,10 +51,10 @@ class Business:
             winner = self.verifyPlayerWithMoreMoney()
             result['playerName'] = winner.name
             result['playerType'] = str(winner.type)
-            print("Winner is "+winner.name+", he has "+str(winner.money))
+            # print("Winner is "+winner.name+", he has "+str(winner.money))
             results.append(result)
 
-        return results
+        return self.generateReports(results)
 
     def initPlayers(self):
         player1 = Player("Player 01", PlayerType.IMPULSIVO, 1)
@@ -119,3 +119,20 @@ class Business:
             return True
         else:
             return False
+
+    def generateReports(self, results):
+        df = pd.DataFrame(results)
+        meanTurns = df['shiftNumber'].mean()
+        gamesThatEndWithTimeout = self.countGamesThatEndWithTimeout(results)
+        print("Mean="+str(meanTurns))
+        print("Timeout="+str(gamesThatEndWithTimeout))
+        reports = {}
+
+        return results
+
+    def countGamesThatEndWithTimeout(self, results):
+        count = 0
+        for i in results:
+            if i['endGameType'] == 'timeout':
+                count += 1
+        return count
