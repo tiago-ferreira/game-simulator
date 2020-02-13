@@ -26,7 +26,7 @@ $ tree .
 
 Antes de rodar o projeto precisamos verificar a versão do python e importar as seguintes libs
 
-- python-version = python 3,8
+- python-version = python 3.8
 ```
 pip3.8 install pandas
 pip3.8 install flask
