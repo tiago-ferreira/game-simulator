@@ -10,7 +10,7 @@ class GameBoard():
         self.__positions = []
         self.__size = size
         for i in range(0,self.__size):
-            self.__house = House(randint(20,40), randint(5,10))
+            self.__house = House(randint(300,500), randint(50,100))
             self.__positionBoard = PositionBoard(self.__house, i)
             self.__positions.append(self.__positionBoard)
 

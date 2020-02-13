@@ -16,7 +16,11 @@ class Business:
 
 
     def execute(self):
+
+        results = []
+
         count = 0
+        result = {}
         while count <= 1000:
             for player in self.__players:
                 if self.hasMoney(player):
@@ -36,16 +40,21 @@ class Business:
                 if self.verifyIfHasOnlyAPlayerWithMoney():
                     break
             print(count)
+            if count == 1000:
+                result['endGameType'] = "timeout"
+            else:
+                result['endGameType'] = "normalVictory"
+            result['shiftNumber'] = count
             if self.verifyIfHasOnlyAPlayerWithMoney():
                 break
             count += 1
         winner = self.verifyPlayerWithMoreMoney()
+        result['playerName'] = winner.name
+        result['playerType'] = str(winner.type)
         print("Winner is "+winner.name+", he has "+str(player.money))
+        results.append(result)
 
-
-
-
-        return {'hello': 'world by apps'}
+        return results
 
     def initPlayers(self):
         player1 = Player("Player 01", PlayerType.IMPULSIVO, 1)
@@ -98,7 +107,7 @@ class Business:
         index = 0
         for i in range(1, 4):
             if self.__players[i].money > self.__players[index].money:
-                index = self.__players[i]
+                index = i
         return self.__players[index]
 
     def verifyIfHasOnlyAPlayerWithMoney(self):
